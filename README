@@ -1,0 +1,9 @@
+mooshu
+written by steve "mookie" kong
+
+mooshu is me reinventing the wheel.  this is a url shortener
+in the same vein as tinyurl and bit.ly.  it is plain since
+i will be the only one using it and anyone visiting has no
+access to anything.
+
+code is covered by gplv3.
