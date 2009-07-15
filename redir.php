@@ -4,14 +4,19 @@
 	$id = stripslashes($_GET['id']);
 	$url = expandUrl($id);
 ?>
-<html>
-<head>
 <?php
 	if ($url == "0") {
+		print "<html>";
+		print "<head>";
 		print "<title>URl not found!</title>\n";
+		print "</head>";
 	} else {
-		print "<meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=$url\">";
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: $url");
+		print "<html>";
+		print "<head>";
 		print "<title>Redirecting to $url</title>";
+		print "</head>";
 	}
 ?>
 </head>
