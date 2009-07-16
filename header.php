@@ -21,7 +21,6 @@ include_once("mooshulib.php");
 		echo "<a href=\"usermod.php\">" . $username . "</a> | <a href=\"settings.php\">settings</a> | <a href=\"logout.php\">logout</a>";
 	} else {
 		echo "<a href=\"login.php\">login</a>";
-		echo "<hr />$sitename is for personal use. if you want to set your own mooshu up, get the code <a href=\"http://github.com/ultramookie/mooshu/tree/master\">here</a>.";
 	}
 ?>
 <hr />

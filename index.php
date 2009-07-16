@@ -17,6 +17,8 @@
 		print "mooshu'd link:  <a href=\"$siteurl/$id\">$siteurl/$id</a><hr />";
 		print "original link: <a href=\"$url\">$url</a>";
         }
+
+	showRecent();
 ?>
 
 <?php

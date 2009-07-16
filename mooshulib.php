@@ -24,6 +24,26 @@ function showUpdateForm() {
         echo "</form>";
 }
 
+function showRecent() {
+	$query = "select id, url from main order by creation desc limit 100";
+	$status = mysql_query($query);
+
+	$numrows = mysql_num_rows($status);
+
+	if ($numrows == 0) {
+		print "no links yet!";
+	} else {
+		print "<b>recently mooshu'd links:</b>";
+		print "<ul>";
+        	while ($row = mysql_fetch_array($status)) {
+			$siteurl = getSiteUrl();
+			$shortenedID = shortenUrlID($row['id']);
+			$url = $row['url'];
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\">$url</a></li>";
+		}
+		print "</ul>";
+        }
+}
 function addEntry($url) {
 	$url = mysql_real_escape_string($url);
 
@@ -177,7 +197,7 @@ function setLoginCookie($user) {
 		setcookie('user',$user,"$expiry");
                 setcookie('mooshu',$login,"$expiry");
 
-	        $query = "update user set cookie='$login' where name like '$user'";
+	        $query = "update user set cookie='$login' where name='$user'";
         	$result = mysql_query($query);
 }
 
@@ -193,7 +213,7 @@ function checkLogin($user,$pass) {
         $salt = substr("$user",0,2);
         $epass = crypt($pass,$salt);
 
-	$query = "select * from user where name like '$user' and pass like '$epass'";
+	$query = "select * from user where name='$user' and pass='$epass'";
 	$result = mysql_query($query);
 
 	if (mysql_num_rows($result)==1) {
@@ -284,7 +304,7 @@ function changePass($user,$pass) {
         $salt = substr("$email",0,2);
         $epass = crypt($pass,$salt);
 
-	$query = "update user set pass='$epass' where name like '$user'";
+	$query = "update user set pass='$epass' where name='$user'";
 	$result = mysql_query($query);
 
 	echo "password has been updated!";
@@ -355,7 +375,7 @@ function sendRandomPass($email,$func) {
 			$query = "insert into user (email,pass) values ('$email','$epass')";
 			$status = mysql_query($query);
 		} else if ((strcmp($func,"lost")) == 0) {
-			$query = "update user set pass='$epass' where email like '$email'";
+			$query = "update user set pass='$epass' where email='$email'";
 			$status = mysql_query($query);
 		} else {
 			echo "nothing to do!";
