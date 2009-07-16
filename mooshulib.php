@@ -25,21 +25,42 @@ function showUpdateForm() {
 }
 
 function showRecent() {
-	$query = "select id, url from main order by creation desc limit 100";
+	$query = "select id, url from main order by creation desc limit 25";
 	$status = mysql_query($query);
+	$query = "select id, url, count from main order by count desc limit 25";
+	$countresult = mysql_query($query);
+	$query = "select id, url from main order by accessed desc limit 25";
+	$accessresult = mysql_query($query);
 
 	$numrows = mysql_num_rows($status);
 
 	if ($numrows == 0) {
 		print "no links yet!";
 	} else {
+		$siteurl = getSiteUrl();
 		print "<b>recently mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($status)) {
-			$siteurl = getSiteUrl();
 			$shortenedID = shortenUrlID($row['id']);
 			$url = $row['url'];
-			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\">$url</a></li>";
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$url</a></li>";
+		}
+		print "</ul>";
+		print "<b>most accessed mooshu'd links:</b>";
+		print "<ul>";
+        	while ($row = mysql_fetch_array($countresult)) {
+			$shortenedID = shortenUrlID($row['id']);
+			$url = $row['url'];
+			$count = $row['count'];
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b> ($count): <a href=\"$url\" rel=\"nofollow\">$url</a></li>";
+		}
+		print "</ul>";
+		print "<b>recently accessed mooshu'd links:</b>";
+		print "<ul>";
+        	while ($row = mysql_fetch_array($accessresult)) {
+			$shortenedID = shortenUrlID($row['id']);
+			$url = $row['url'];
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$url</a></li>";
 		}
 		print "</ul>";
         }
@@ -53,7 +74,7 @@ function addEntry($url) {
 	$numrows = mysql_num_rows($status);
 
 	if ($numrows == 0) {
-		$query = "insert into main (url,creation) values ('$url',NOW())";
+		$query = "insert into main (url,creation,count,accessed) values ('$url',NOW(),'0',NOW())";
 		$status = mysql_query($query);
 		$query = "select id from main where url='$url'";
 		$status = mysql_query($query);
@@ -75,7 +96,7 @@ function shortenUrlID($id) {
 
 function expandUrl($id) {
 	$realid = base_convert($id,36,10);
-	$query = "select id,url from main where id='$realid'";
+	$query = "select id,url,count from main where id='$realid'";
         $status = mysql_query($query);
 	$numrows = mysql_num_rows($status);
 	if ($numrows == 0) {
@@ -83,6 +104,10 @@ function expandUrl($id) {
 	} else {
 		$row = mysql_fetch_array($status);
 		$url = $row['url'];
+		$count = $row['count'];
+		$count++;
+		$query = "update main set count='$count', accessed=NOW() where id='$realid'";
+        	$status = mysql_query($query);
 	}
 	return($url);
 }
@@ -341,7 +366,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
 		$status = mysql_query($query);
 
-		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, creation DATETIME NOT NULL, url varchar(1024) NOT NULL, PRIMARY KEY (id)); ";
+		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, creation DATETIME NOT NULL, url varchar(1024) NOT NULL, count int NOT NULL, accessed DATETIME NOT NULL, PRIMARY KEY (id)); ";
 		$status = mysql_query($query);
 		
 		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL ); ";
