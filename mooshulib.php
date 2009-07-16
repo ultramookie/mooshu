@@ -25,19 +25,33 @@ function showUpdateForm() {
 }
 
 function showRecent() {
-	$query = "select id, url from main order by creation desc limit 25";
-	$status = mysql_query($query);
-	$query = "select id, url, count from main order by count desc limit 25";
-	$countresult = mysql_query($query);
-	$query = "select id, url from main order by accessed desc limit 25";
-	$accessresult = mysql_query($query);
+	$numResults = 10;
 
+	$query = "select id, url from main order by creation desc limit $numResults";
+	$status = mysql_query($query);
+	$query = "select id, url, count from main order by count desc limit $numResults";
+	$countresult = mysql_query($query);
+	$query = "select id, url from main order by accessed desc limit $numResults";
+	$accessresult = mysql_query($query);
+	$query = "select id from main order by creation desc limit 1";
+	$randresult = mysql_query($query);
+
+	
 	$numrows = mysql_num_rows($status);
 
 	if ($numrows == 0) {
 		print "no links yet!";
 	} else {
 		$siteurl = getSiteUrl();
+
+		print "<b>random mooshu'd link:</b>";
+       		$randrow = mysql_fetch_array($randresult);
+		$randurlid = rand(1,$randrow['id']);
+		$shortenedID = shortenUrlID($randurlid);
+		print "<ul>";
+		print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b></li>";
+		print "</ul>";
+
 		print "<b>recently mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($status)) {
