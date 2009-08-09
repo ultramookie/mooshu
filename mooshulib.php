@@ -57,26 +57,29 @@ function showRecent() {
 		print "<ul>";
         	while ($row = mysql_fetch_array($status)) {
 			$shortenedID = shortenUrlID($row['id']);
-			$url = substr($row['url'],0,$urlLen);
-			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$url...</a></li>";
+			$url = $row['url'];
+			$suburl = substr($row['url'],0,$urlLen);
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
 		}
 		print "</ul>";
 		print "<b>most accessed mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($countresult)) {
 			$shortenedID = shortenUrlID($row['id']);
-			$url = substr($row['url'],0,$urlLen);
+			$url = $row['url'];
+			$suburl = substr($row['url'],0,$urlLen);
 			$count = $row['count'];
-			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b> ($count): <a href=\"$url\" rel=\"nofollow\">$url...</a></li>";
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b> ($count): <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
 		}
 		print "</ul>";
 		print "<b>recently accessed mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($accessresult)) {
 			$shortenedID = shortenUrlID($row['id']);
-			$url = substr($row['url'],0,$urlLen);
+			$url = $row['url'];
+			$suburl = substr($row['url'],0,$urlLen);
 			$count = $row['count'];
-			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$url...</a></li>";
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
 		}
 		print "</ul>";
         }
