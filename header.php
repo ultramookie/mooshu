@@ -5,13 +5,8 @@ include_once("mooshulib.php");
 <html>
 <head>
 <title><? echo "$sitename"; ?> </title>
-<style type="text/css">
-    body {
-	font-size: small;
-        font-family: "Verdana", Sans;
-    }
-
-</style>
+<link rel="stylesheet" type="text/css" href="yui/base-min.css" />
+<link rel="stylesheet" type="text/css"  href="yui/reset-fonts.css" />
 </head>
 <body>
 <h2><b><a href="<? echo "$siteurl"; ?>"><? echo "$sitename"; ?></a></b></h2>
