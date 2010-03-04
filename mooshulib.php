@@ -45,14 +45,17 @@ function showRecent() {
 	} else {
 		$siteurl = getSiteUrl();
 
+		print "<br />";
 		print "<b>random mooshu'd link:</b>";
        		$randrow = mysql_fetch_array($randresult);
 		$randurlid = rand(1,$randrow['id']);
 		$shortenedID = shortenUrlID($randurlid);
+		print "<br />";
 		print "<ul>";
 		print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b></li>";
 		print "</ul>";
 
+		print "<br />";
 		print "<b>recently mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($status)) {
@@ -62,6 +65,7 @@ function showRecent() {
 			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
 		}
 		print "</ul>";
+		print "<br />";
 		print "<b>most accessed mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($countresult)) {
@@ -72,6 +76,7 @@ function showRecent() {
 			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b> ($count): <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
 		}
 		print "</ul>";
+		print "<br />";
 		print "<b>recently accessed mooshu'd links:</b>";
 		print "<ul>";
         	while ($row = mysql_fetch_array($accessresult)) {
