@@ -32,7 +32,7 @@ function showRecent() {
 	$status = mysql_query($query);
 	$query = "select id, url, count from main order by count desc limit $numResults";
 	$countresult = mysql_query($query);
-	$query = "select id, url from main order by accessed desc limit $numResults";
+	$query = "select id, url, count from main order by accessed desc limit $numResults";
 	$accessresult = mysql_query($query);
 	$query = "select id from main order by creation desc limit 1";
 	$randresult = mysql_query($query);
@@ -84,7 +84,7 @@ function showRecent() {
 			$url = $row['url'];
 			$suburl = substr($row['url'],0,$urlLen);
 			$count = $row['count'];
-			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b>: <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
+			print "<li><b><a href=\"$siteurl/$shortenedID\">$siteurl/$shortenedID</a></b> ($count): <a href=\"$url\" rel=\"nofollow\">$suburl...</a></li>";
 		}
 		print "</ul>";
         }
