@@ -128,7 +128,7 @@ function expandUrl($id,$useragent) {
 	} else {
 		$row = mysql_fetch_array($status);
 		$url = $row['url'];
-		if (! preg_match("/bot/i", $useragent))  {
+		if (! preg_match("/bot|slurp|spider|postrank|unwindfetchor|metauri/i", $useragent))  {
 			$count = $row['count'];
 			$count++;
 			$query = "update main set count='$count', accessed=NOW() where id='$realid'";
