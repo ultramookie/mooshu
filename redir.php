@@ -2,13 +2,14 @@
 	include_once('db.php');
 	include_once('mooshulib.php');
 	$id = stripslashes($_GET['id']);
-	$url = expandUrl($id);
+	$useragent = $_SERVER['HTTP_USER_AGENT'];
+	$url = expandUrl($id,$useragent);
 ?>
 <?php
 	if ($url == "0") {
 		print "<html>";
 		print "<head>";
-		print "<title>URl not found!</title>\n";
+		print "<title>URL not found!</title>\n";
 		print "</head>";
 	} else {
 		header("HTTP/1.1 301 Moved Permanently");

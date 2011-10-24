@@ -118,7 +118,7 @@ function shortenUrlID($id) {
 	return($shortID);
 }
 
-function expandUrl($id) {
+function expandUrl($id,$useragent) {
 	$realid = base_convert($id,36,10);
 	$query = "select id,url,count from main where id='$realid'";
         $status = mysql_query($query);
@@ -128,10 +128,12 @@ function expandUrl($id) {
 	} else {
 		$row = mysql_fetch_array($status);
 		$url = $row['url'];
-		$count = $row['count'];
-		$count++;
-		$query = "update main set count='$count', accessed=NOW() where id='$realid'";
-        	$status = mysql_query($query);
+		if (! preg_match("/bot/i", $useragent))  {
+			$count = $row['count'];
+			$count++;
+			$query = "update main set count='$count', accessed=NOW() where id='$realid'";
+        		$status = mysql_query($query);
+		}
 	}
 	return($url);
 }
